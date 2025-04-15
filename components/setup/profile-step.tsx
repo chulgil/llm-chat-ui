@@ -13,6 +13,7 @@ import {
 import { FC, useCallback, useState } from "react"
 import { LimitDisplay } from "../ui/limit-display"
 import { toast } from "sonner"
+import { useTranslation } from "react-i18next"
 
 interface ProfileStepProps {
   username: string
@@ -32,6 +33,7 @@ export const ProfileStep: FC<ProfileStepProps> = ({
   onDisplayNameChange
 }) => {
   const [loading, setLoading] = useState(false)
+  const { t } = useTranslation()
 
   const debounce = (func: (...args: any[]) => void, wait: number) => {
     let timeout: NodeJS.Timeout | null
@@ -130,7 +132,7 @@ export const ProfileStep: FC<ProfileStepProps> = ({
       </div>
 
       <div className="space-y-1">
-        <Label>Chat Display Name</Label>
+        <Label>{t("chat_display_name")}</Label>
 
         <Input
           placeholder="Your Name"

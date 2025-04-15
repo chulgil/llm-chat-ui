@@ -9,6 +9,9 @@ import { get } from "@vercel/edge-config"
 import { Metadata } from "next"
 import { cookies, headers } from "next/headers"
 import { redirect } from "next/navigation"
+import { Button } from "@/components/ui/button"
+import { Github } from "lucide-react"
+import { GithubLoginButton } from "@/components/auth/github-login-button"
 
 export const metadata: Metadata = {
   title: "Login"
@@ -161,6 +164,25 @@ export default async function Login({
     return redirect("/login?message=Check email to reset password")
   }
 
+  const signInWithGithub = async () => {
+    "use server"
+
+    const cookieStore = cookies()
+    const supabase = createClient(cookieStore)
+    const origin = headers().get("origin")
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "github",
+      options: {
+        redirectTo: `${origin}/auth/callback`
+      }
+    })
+
+    if (error) {
+      return redirect(`/login?message=${error.message}`)
+    }
+  }
+
   return (
     <div className="flex w-full flex-1 flex-col justify-center gap-2 px-8 sm:max-w-md">
       <form
@@ -199,6 +221,19 @@ export default async function Login({
         >
           Sign Up
         </SubmitButton>
+
+        <div className="relative my-4">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background text-muted-foreground px-2">
+              Or continue with
+            </span>
+          </div>
+        </div>
+
+        <GithubLoginButton />
 
         <div className="text-muted-foreground mt-1 flex justify-center text-sm">
           <span className="mr-1">Forgot your password?</span>

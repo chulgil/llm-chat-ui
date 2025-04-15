@@ -87,12 +87,12 @@ export default async function RootLayout({
   const { t, resources } = await initTranslations(locale, i18nNamespaces)
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={locale} suppressHydrationWarning>
       <body className={inter.className}>
         <Providers attribute="class" defaultTheme="dark">
           <TranslationsProvider
-            namespaces={i18nNamespaces}
             locale={locale}
+            namespaces={i18nNamespaces}
             resources={resources}
           >
             <Toaster richColors position="top-center" duration={3000} />

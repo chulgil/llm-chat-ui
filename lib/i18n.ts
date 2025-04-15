@@ -25,12 +25,20 @@ export default async function initTranslations(
   await i18nInstance.init({
     lng: locale,
     resources,
-    fallbackLng: i18nConfig.defaultLocale,
-    supportedLngs: i18nConfig.locales,
+    fallbackLng: "en",
+    supportedLngs: ["en", "ko"],
     defaultNS: namespaces[0],
     fallbackNS: namespaces[0],
     ns: namespaces,
-    preload: resources ? [] : i18nConfig.locales
+    preload: resources ? [] : ["en", "ko"],
+    interpolation: {
+      escapeValue: false
+    },
+    react: {
+      useSuspense: false
+    },
+    initImmediate: false,
+    load: "languageOnly"
   })
 
   return {

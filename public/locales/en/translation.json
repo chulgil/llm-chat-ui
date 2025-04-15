@@ -1,3 +1,14 @@
 {
-  "Ask anything. Type \"/\" for prompts, \"@\" for files, and \"#\" for tools.": "Ask anything. Type \"/\" for prompts, \"@\" for files, and \"#\" for tools."
+  "Ask anything. Type \"/\" for prompts, \"@\" for files, and \"#\" for tools.": "Ask anything. Type \"/\" for prompts, \"@\" for files, and \"#\" for tools.",
+  "search_tools": "Search tools...!",
+  "tools_selected": "tools selected",
+  "new_tool": "New Tool",
+  "new_folder": "New Folder",
+  "new_chat": "New Chat",
+  "new_preset": "New Preset",
+  "new_prompt": "New Prompt",
+  "new_file": "New File",
+  "new_collection": "New Collection",
+  "new_assistant": "New Assistant",
+  "new_model": "New Model"
 }

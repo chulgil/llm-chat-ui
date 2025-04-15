@@ -4,6 +4,7 @@ import { createFolder } from "@/db/folders"
 import { ContentType } from "@/types"
 import { IconFolderPlus, IconPlus } from "@tabler/icons-react"
 import { FC, useContext, useState } from "react"
+import { useTranslation } from "react-i18next"
 import { Button } from "../ui/button"
 import { CreateAssistant } from "./items/assistants/create-assistant"
 import { CreateCollection } from "./items/collections/create-collection"
@@ -25,6 +26,7 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
   const { profile, selectedWorkspace, folders, setFolders } =
     useContext(ChatbotUIContext)
   const { handleNewChat } = useChatHandler()
+  const { t } = useTranslation()
 
   const [isCreatingPrompt, setIsCreatingPrompt] = useState(false)
   const [isCreatingPreset, setIsCreatingPreset] = useState(false)
@@ -41,7 +43,7 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
     const createdFolder = await createFolder({
       user_id: profile.user_id,
       workspace_id: selectedWorkspace.id,
-      name: "New Folder",
+      name: t("new_folder"),
       description: "",
       type: contentType
     })
@@ -95,13 +97,34 @@ export const SidebarCreateButtons: FC<SidebarCreateButtonsProps> = ({
     }
   }
 
+  const getButtonText = () => {
+    switch (contentType) {
+      case "chats":
+        return t("new_chat")
+      case "presets":
+        return t("new_preset")
+      case "prompts":
+        return t("new_prompt")
+      case "files":
+        return t("new_file")
+      case "collections":
+        return t("new_collection")
+      case "assistants":
+        return t("new_assistant")
+      case "tools":
+        return t("new_tool")
+      case "models":
+        return t("new_model")
+      default:
+        return ""
+    }
+  }
+
   return (
     <div className="flex w-full space-x-2">
       <Button className="flex h-[36px] grow" onClick={getCreateFunction()}>
         <IconPlus className="mr-1" size={20} />
-        New{" "}
-        {contentType.charAt(0).toUpperCase() +
-          contentType.slice(1, contentType.length - 1)}
+        {getButtonText()}
       </Button>
 
       {hasData && (

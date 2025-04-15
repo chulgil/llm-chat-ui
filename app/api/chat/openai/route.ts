@@ -1,8 +1,9 @@
 import { checkApiKey, getServerProfile } from "@/lib/server/server-chat-helpers"
 import { ChatSettings } from "@/types"
-import { OpenAIStream, StreamingTextResponse } from "ai"
+import { OpenAI } from "openai"
+import { OpenAIStream } from "@/lib/ai/openai-stream"
+import { StreamingTextResponse } from "@/lib/ai/streaming-text-response"
 import { ServerRuntime } from "next"
-import OpenAI from "openai"
 import { ChatCompletionCreateParamsBase } from "openai/resources/chat/completions.mjs"
 
 export const runtime: ServerRuntime = "edge"
@@ -36,7 +37,7 @@ export async function POST(request: Request) {
       stream: true
     })
 
-    const stream = OpenAIStream(response)
+    const stream = await OpenAIStream(response)
 
     return new StreamingTextResponse(stream)
   } catch (error: any) {

@@ -13,6 +13,7 @@ import {
   IconCircleCheckFilled
 } from "@tabler/icons-react"
 import { FC, useContext, useEffect, useRef, useState } from "react"
+import { useTranslation } from "react-i18next"
 
 interface AssistantToolSelectProps {
   selectedAssistantTools: Tables<"tools">[]
@@ -24,6 +25,7 @@ export const AssistantToolSelect: FC<AssistantToolSelectProps> = ({
   onAssistantToolsSelect
 }) => {
   const { tools } = useContext(ChatbotUIContext)
+  const { t } = useTranslation()
 
   const inputRef = useRef<HTMLInputElement>(null)
   const triggerRef = useRef<HTMLButtonElement>(null)
@@ -64,7 +66,7 @@ export const AssistantToolSelect: FC<AssistantToolSelectProps> = ({
         >
           <div className="flex items-center">
             <div className="ml-2 flex items-center">
-              {selectedAssistantTools.length} tools selected
+              {selectedAssistantTools.length} {t("tools_selected")}
             </div>
           </div>
 
@@ -79,47 +81,57 @@ export const AssistantToolSelect: FC<AssistantToolSelectProps> = ({
       >
         <Input
           ref={inputRef}
-          placeholder="Search tools..."
+          placeholder={t("search_tools")}
           value={search}
           onChange={e => setSearch(e.target.value)}
           onKeyDown={e => e.stopPropagation()}
         />
 
-        {selectedAssistantTools
-          .filter(item =>
-            item.name.toLowerCase().includes(search.toLowerCase())
-          )
-          .map(tool => (
-            <AssistantToolItem
-              key={tool.id}
-              tool={tool}
-              selected={selectedAssistantTools.some(
-                selectedAssistantRetrieval =>
-                  selectedAssistantRetrieval.id === tool.id
-              )}
-              onSelect={handleToolSelect}
-            />
-          ))}
+        {tools.length === 0 && (
+          <div className="text-muted-foreground flex items-center justify-center py-4 text-sm">
+            {t("no_tools")}
+          </div>
+        )}
 
-        {tools
-          .filter(
-            tool =>
-              !selectedAssistantTools.some(
-                selectedAssistantRetrieval =>
-                  selectedAssistantRetrieval.id === tool.id
-              ) && tool.name.toLowerCase().includes(search.toLowerCase())
-          )
-          .map(tool => (
-            <AssistantToolItem
-              key={tool.id}
-              tool={tool}
-              selected={selectedAssistantTools.some(
-                selectedAssistantRetrieval =>
-                  selectedAssistantRetrieval.id === tool.id
-              )}
-              onSelect={handleToolSelect}
-            />
-          ))}
+        {tools.length > 0 && (
+          <>
+            {selectedAssistantTools
+              .filter(item =>
+                item.name.toLowerCase().includes(search.toLowerCase())
+              )
+              .map(tool => (
+                <AssistantToolItem
+                  key={tool.id}
+                  tool={tool}
+                  selected={selectedAssistantTools.some(
+                    selectedAssistantRetrieval =>
+                      selectedAssistantRetrieval.id === tool.id
+                  )}
+                  onSelect={handleToolSelect}
+                />
+              ))}
+
+            {tools
+              .filter(
+                tool =>
+                  !selectedAssistantTools.some(
+                    selectedAssistantRetrieval =>
+                      selectedAssistantRetrieval.id === tool.id
+                  ) && tool.name.toLowerCase().includes(search.toLowerCase())
+              )
+              .map(tool => (
+                <AssistantToolItem
+                  key={tool.id}
+                  tool={tool}
+                  selected={selectedAssistantTools.some(
+                    selectedAssistantRetrieval =>
+                      selectedAssistantRetrieval.id === tool.id
+                  )}
+                  onSelect={handleToolSelect}
+                />
+              ))}
+          </>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   )
